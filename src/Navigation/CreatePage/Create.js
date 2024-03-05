@@ -31,8 +31,7 @@ function Create() {
   };
   
   const information = async() =>{
-    console.log(formData.projectDescription);
-    console.log(formData.projectName);
+    console.log(formData.projectName , formData.projectDescription);
   }
   const addProject = async () => {
     if (formData.projectName.trim() === "") {
@@ -56,8 +55,6 @@ function Create() {
         handleFormDataChange("projectName", "");
         handleFormDataChange("projectDescription", ""); 
         console.log(response);
-
-        // 導航回去
         navigate(`/Project?id=${id}&type=1`);
       } catch (error) {
         console.error("Error sending data to backend:", error);
@@ -97,7 +94,6 @@ function Create() {
         </div>
         <div className="createProjectDescription">
           <label className="form-label fs-6">專案描述：</label>
-          {/* 彥君注意這裡 */}
           <textarea
           name="projectDescription"
           value={formData.projectDescription}

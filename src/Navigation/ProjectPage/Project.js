@@ -31,18 +31,11 @@ function Project() {
             }
           });
           console.log(response.data);
+          
           setProjectList(response.data);
         } catch (error) {
           console.error('獲取數據時出錯', error);
         }
-      // try {
-      //   const response = await axios.get(`${g_r}/?username=${type ? id : userid}`);
-      //   setProjectList(response.data);
-      //   console.log(response.data);
-      // } catch (error) {
-      //   console.error(error);
-       
-      // }
     };
     fetchData();
   }, []);
@@ -93,6 +86,14 @@ function Project() {
 
   const handleConfirmLogout = () => {
     setShowLogoutPrompt(false);
+    const confirmlogout = window.confirm("確定要登出嗎？");
+    if (!confirmlogout) {
+      return;
+    }
+    localStorage.setItem('jwtToken',false);
+    alert('註銷token');
+    const token = localStorage.getItem('jwtToken');
+    console.log(token);
     navigate("/"); // Redirect to the home page
   };
 
@@ -141,10 +142,6 @@ function Project() {
        <NavLink to={`/CreatePage?id=${type ? id : userid}`}>
           <button className="btn add-project-button">新增專案</button>
        </NavLink>
-
-      <div className="mt-2"> {/* 調整 mt-2 或其他樣式以達到合適的間距 */}
-         {/* <button className='btn add-project-button2' onClick={handleLabelNavigate}>標註資料</button> */}
-      </div>
     </div>
     </div>
 
@@ -158,24 +155,18 @@ function Project() {
             <div className="project-list-grid">
 
               <h2 className="project-Name">{projectName}</h2>
-              {/* <h2 className="project-Name">{localStorage.getItem(`projectName`)}</h2> */}
-          
-              {/* <div className=" projectNavLink" >
-                {filteredProjects.map((projectDescription,index)=>(
-                  <p className="project-Detial" key={index}>{projectDescription}</p>
-                ))}
-                </div> */}
                   <div className="projectNavLink">
-                  <p className="project-Detial">事後需要修改後端傳送的資料</p>
+                  <p className="project-Detial">projectDescription</p>
                   </div>
   
               <div className="project-Delete">
                 <button className="btn deleteButton" onClick={() => handleDeleteProject(index)}>刪除專案</button>
               </div>
               <div className="project-Nav"  style={{ marginLeft: '110px' }}>
-                <button className="btn deleteButton" onClick={handleNavigate} >
-                  進入專案
-                </button>
+              <button className="btn deleteButton" onClick={() => handleNavigate(projectName)}>
+                進入專案
+              </button>
+
               </div> 
           </div>
           

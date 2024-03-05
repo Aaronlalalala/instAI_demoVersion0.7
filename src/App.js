@@ -24,6 +24,8 @@ const UploadImg = lazy(() => import('./Navigation/UploadImg/UploadImg'));
 // const LabelCreate = lazy(() => import("./tool/LabelCreate"));
 // // 還沒完成頁面
 // const LabelPage = lazy(() => import('./tool/LabelPage'));
+
+// 增加開發者頁面 並具有監看的權限
 const Loading = lazy(() => import('./loading'));
 function AppDev() {
   
@@ -38,7 +40,7 @@ function AppDev() {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
-      if (location.pathname !== "/Login" && location.pathname !== "/" && isLoggedIn !== true) {
+      if (location.pathname !== "/Login" && isLoggedIn !== true) {
         navigate("/Login"); //鎖住其他頁面 不准url 操作導航
       }
     }
