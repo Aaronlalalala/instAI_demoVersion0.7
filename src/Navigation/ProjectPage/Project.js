@@ -97,7 +97,7 @@ function Project() {
       return;
     }
     localStorage.setItem('jwtToken',false);
-    alert('註銷token');
+    //alert('註銷token');
     const token = localStorage.getItem('jwtToken');
     console.log(token);
     navigate("/"); // Redirect to the home page

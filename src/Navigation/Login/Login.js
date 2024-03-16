@@ -1,4 +1,4 @@
-import React, { useState,  Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import basestyle from "../Base.module.css";
 import loginstyle from "./Login.module.css";
 import axios from "axios";
@@ -37,32 +37,71 @@ const Login = ({ setUserState }) => {
     }
     return error;
   };
+  // const loginHandler = async (e) => {
+  //   e.preventDefault();
+  //   setFormErrors(validateForm(user));
+  //   setIsSubmit(true);
+  
+  //   if (Object.keys(formErrors).length !== 0 || !isSubmit) {
+  //     return;
+  //   }
+  
+  //   try {
+  //     const response = await axios.post(log_in, user,);
+  //     console.log(response.data);
+  //     if (response.data && response.data.message && typeof response.data === 'object' && response.data.message.includes("Failed")) {
+  //       alert("登錄失敗！");
+  //     } else {
+  //       alert("登錄成功！");
+  //       const token = response.data.token;
+  //       localStorage.setItem("jwtToken", token);
+  //       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  //       const remove = "Success";
+  //       const id = response.data.message.replace(remove, "");
+  //       console.log(id);
+  //       navigate("/Project", { state: id, replace: true });
+  //     }
+  //   } catch (error) {
+  //     console.error('登錄時出錯', error);
+  //   }
+  // };
+  
+
   const loginHandler = async (e) => {
-    e.preventDefault();
-    setFormErrors(validateForm(user));
-    setIsSubmit(true);
-  
-    if (Object.keys(formErrors).length !== 0 || !isSubmit) {
-      return;
-    }
-  
     try {
-      const response = await axios.post(log_in, user,);
-      console.log(response.data);
-      if (response.data && response.data.message && typeof response.data === 'object' && response.data.message.includes("Failed")) {
-        alert("登錄失敗！");
-      } else {
-        alert("登錄成功！");
-        const token = response.data.token;
-        localStorage.setItem("jwtToken", token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        const remove = "Success";
-        const id = response.data.message.replace(remove, "");
-        console.log(id);
-        navigate("/Project", { state: id, replace: true });
+      e.preventDefault();
+      
+      if (isSubmit) return;
+      
+      setIsSubmit(true);
+      
+      const errors = validateForm(user);
+      setFormErrors(errors);
+      
+      if (Object.keys(errors).length !== 0) {
+        return;
+      }
+      
+      const response = await axios.post(log_in, user);
+      
+      if (response.data && response.data.message) {
+        if (response.data.message.includes("Failed")) {
+          alert("登錄失敗！");
+        } else {
+          alert("登錄成功！");
+          const token = response.data.token;
+          localStorage.setItem("jwtToken", token);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          const id = response.data.message.replace("Success", "");
+          console.log(id);
+          navigate("/Project", { state: id, replace: true });
+        }
       }
     } catch (error) {
       console.error('登錄時出錯', error);
+    } finally {
+      // 重置提交狀態
+      setIsSubmit(false);
     }
   };
   
